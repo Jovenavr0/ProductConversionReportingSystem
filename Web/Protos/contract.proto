@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option csharp_namespace = "ReportServiceApp";
+
+import "google/protobuf/timestamp.proto";
+
+package contract;
+
+service ReportService {
+  rpc RequestReport (ReportRequest) returns (ReportResponse);
+  rpc GetReportResult (GetReportRequest) returns (ReportReply);
+}
+
+message ReportRequest {
+  google.protobuf.Timestamp startGap = 1;
+  google.protobuf.Timestamp endGap = 2;
+  int64 productId = 3;
+  string userId = 4;
+  string decorationId = 5;
+}
+
+message ReportResponse {
+  string reportId = 1;
+  ReportStatus status = 2;
+}
+
+enum ReportStatus {
+  Pending = 0;
+  Processing = 1;
+  Completed = 2;
+  Failed = 3;
+}
+
+message GetReportRequest {
+  string reportId = 1;
+}
+
+message ReportReply {
+  string reportId = 1;
+  ReportStatus status = 2;
+  double ratio = 3;
+  int64 countPayments = 4;
+  google.protobuf.Timestamp createdAt = 5;
+}
